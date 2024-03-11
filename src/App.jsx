@@ -1,4 +1,4 @@
-import { ThemeProvider, createTheme, CssBaseline, Box, Stack, Typography, AppBar, Toolbar, Drawer, ListItem, ListItemButton, ListItemText, useTheme, useMediaQuery, Fab, Tabs, Tab, IconButton } from "@mui/material";
+import { ThemeProvider, createTheme, CssBaseline, Box, Stack, Typography, AppBar, Toolbar, Drawer, ListItem, ListItemButton, ListItemText, useTheme, useMediaQuery, Fab, Tabs, Tab, IconButton, Snackbar } from "@mui/material";
 import { useState, useEffect, createContext, useReducer } from "react";
 import Home from "./routers/home";
 import Bookmark from "./routers/bookmark";
@@ -7,12 +7,17 @@ import { resources } from "./routers/product";
 import { teal } from '@mui/material/colors';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import MenuIcon from '@mui/icons-material/Menu';
+import BookmarkAddedIcon from '@mui/icons-material/BookmarkAdded';
+import BookmarkRemoveIcon from '@mui/icons-material/BookmarkRemove';
 export const AppData = createContext();
 function App() {
   const initialstate = {
     resourceslist: resources,
     bookmarklist: [],
     is_item_added_to_bookmark: false,
+    snack_message: '',
+    show_alert: false,
+    alert_icon: null
   }
   const drawerWidth = 200;
   const [selectIndex, setSelectIndex] = useState(0);
@@ -68,16 +73,28 @@ function App() {
       const push_this_item = resources.find((el) => el.productName === action.payload);
       return {
         ...state,
+        show_alert: true,
+        alert_icon: <BookmarkAddedIcon sx={{ color: 'green' }} />,
+        snack_message: 'Item added to bookmarks',
         is_item_added_to_bookmark: true,
-        bookmarklist: [...state.bookmarklist, push_this_item]
+        bookmarklist: [...state.bookmarklist, push_this_item],
       }
     }
     if (action.type === "remove-from-bookmark") {
       const pull_this_item = state.bookmarklist.filter((item) => item.productName !== action.payload)
       return {
         ...state,
+        alert_icon: <BookmarkRemoveIcon sx={{ color: 'red' }} />,
+        show_alert: true,
+        snack_message: 'Item deleted from bookmarks',
         is_item_added_to_bookmark: false,
         bookmarklist: pull_this_item
+      }
+    }
+    if (action.type === "close-snackbar") {
+      return {
+        ...state,
+        show_alert: false,
       }
     }
   }
@@ -119,6 +136,20 @@ function App() {
   return (
     <>
       <ThemeProvider theme={darktheme}>
+        <Snackbar message={
+          <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={1.2}>
+            <Typography variant="body1" color="inherit" textAlign="center">{state.snack_message}</Typography>
+            <div>{state.alert_icon}</div>
+          </Stack>
+        } color="inherit" anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'center'
+        }}
+          size="small"
+          autoHideDuration={2000}
+          open={state.show_alert}
+          onClose={() => { dispatch({ type: 'close-snackbar' }) }}
+        />
         <CssBaseline />
         <Box sx={{
           display: 'flex',

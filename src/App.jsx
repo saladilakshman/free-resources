@@ -137,9 +137,9 @@ function App() {
     <>
       <ThemeProvider theme={darktheme}>
         <Snackbar message={
-          <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={1.2}>
+          <Stack direction="row" justifyContent="space-evenly" alignItems="center" spacing={1.2}>
+            <Box>{state.alert_icon}</Box>
             <Typography variant="body1" color="inherit" textAlign="center">{state.snack_message}</Typography>
-            <div>{state.alert_icon}</div>
           </Stack>
         } color="inherit" anchorOrigin={{
           vertical: 'top',

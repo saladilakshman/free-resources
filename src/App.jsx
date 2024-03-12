@@ -1,4 +1,4 @@
-import { ThemeProvider, createTheme, CssBaseline, Box, Stack, Typography, AppBar, Toolbar, Drawer, ListItem, ListItemButton, ListItemText, useTheme, useMediaQuery, Fab, Tabs, Tab, IconButton, Snackbar } from "@mui/material";
+import { ThemeProvider, createTheme, CssBaseline, Box, Stack, Typography, AppBar, Toolbar, Drawer, ListItem, ListItemButton, ListItemText, useTheme, useMediaQuery, Fab, Tabs, Tab, IconButton, Snackbar, Badge } from "@mui/material";
 import { useState, useEffect, createContext, useReducer } from "react";
 import Home from "./routers/home";
 import Bookmark from "./routers/bookmark";
@@ -9,6 +9,8 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import MenuIcon from '@mui/icons-material/Menu';
 import BookmarkAddedIcon from '@mui/icons-material/BookmarkAdded';
 import BookmarkRemoveIcon from '@mui/icons-material/BookmarkRemove';
+import HomeIcon from '@mui/icons-material/Home';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
 export const AppData = createContext();
 function App() {
   const initialstate = {
@@ -125,12 +127,14 @@ function App() {
     {
       name: 'Home',
       path: '/',
-      element: <Home />
+      element: <Home />,
+      icon: <HomeIcon />
     },
     {
       name: 'Bookmarks',
       path: '/bookmark',
-      element: <Bookmark />
+      element: <Bookmark />,
+      icon: <BookmarkIcon />
     }
   ]
   return (
@@ -169,7 +173,7 @@ function App() {
                 }} color="inherit" onClick={() => setShow_drawer(true)}>
                   <MenuIcon />
                 </IconButton>
-                <Typography variant={small_devices ? 'h6' : 'h4'} color="inherit" textAlign="center">
+                <Typography variant={small_devices ? 'body1' : 'h4'} color="inherit" textAlign="center">
                   Free-Toolkit
                 </Typography>
                 <Stack direction="row" justifyContent="end" alignItems="center" sx={{ ml: 'auto' }} spacing={1.2}>

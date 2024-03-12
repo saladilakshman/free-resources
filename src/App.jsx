@@ -1,8 +1,8 @@
-import { ThemeProvider, createTheme, CssBaseline, Box, Stack, Typography, AppBar, Toolbar, Drawer, ListItem, ListItemButton, ListItemText, useTheme, useMediaQuery, Fab, Tabs, Tab, IconButton, Snackbar, Badge } from "@mui/material";
+import { ThemeProvider, createTheme, CssBaseline, Box, Stack, Typography, AppBar, Toolbar, Drawer, ListItem, ListItemButton, ListItemText, useTheme, useMediaQuery, Fab, IconButton, Snackbar, } from "@mui/material";
 import { useState, useEffect, createContext, useReducer } from "react";
 import Home from "./routers/home";
 import Bookmark from "./routers/bookmark";
-import { useNavigate, Routes, Route, useLocation, Link } from "react-router-dom";
+import { useNavigate, Routes, Route, useLocation } from "react-router-dom";
 import { resources } from "./routers/product";
 import { teal } from '@mui/material/colors';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
@@ -23,6 +23,7 @@ function App() {
   }
   const drawerWidth = 200;
   const [selectIndex, setSelectIndex] = useState(0);
+  const [activeroute, setActiveroute] = useState(0);
   const theme = useTheme();
   const small_devices = useMediaQuery(theme.breakpoints.down("sm"))
   const [show_drawer, setShow_drawer] = useState(false);
@@ -176,27 +177,24 @@ function App() {
                 <Typography variant={small_devices ? 'body1' : 'h4'} color="inherit" textAlign="center">
                   Free-Toolkit
                 </Typography>
-                <Stack direction="row" justifyContent="end" alignItems="center" sx={{ ml: 'auto' }} spacing={1.2}>
+                <Stack direction="row" justifyContent="end" alignItems="center" sx={{ ml: 'auto' }} spacing={1.8}>
                   {
                     RoutingElements.map((routingelement, index) => {
                       return (
-                        <Tabs
-                          key={index}
-                          value={location.pathname === routingelement.path ? index : false}
-                          component={Link}
-                          to={routingelement.path}
-                          sx={{ textDecoration: "none", color: 'inherit' }}
-                        >
-                          <Tab
-                            value={index}
-                            label={routingelement.name}
-                            name={routingelement.name}
-                            sx={{
-                              color: 'primary',
-                              fontSize: 12
+                        <Box key={index} sx={{
+                          textDecoration: 'none',
+                          color: 'inherit'
+                        }}>
+                          <Typography variant="body1" color="inherit" sx={{
+                            color: index === activeroute ? teal[200] : 'inherit',
+                            cursor: 'pointer'
+                          }}
+                            onClick={() => {
+                              navigate(routingelement.path);
+                              setActiveroute(index)
                             }}
-                          />
-                        </Tabs>
+                          >{routingelement.name}</Typography>
+                        </Box>
                       );
                     })
                   }
